@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
+from fastapi.middleware.cors import CORSMiddleware
 
 SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
@@ -26,6 +27,14 @@ def create_access_token(data: dict, expires_delta: timedelta):
     expire = datetime.utcnow() + expires_delta
     to_encode.update({"exp": expire})
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["https://zta-frontend.vercel.app"],  # Replace with your frontend's URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
