@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import FastAPI
 
 SECRET_KEY = "your_secret_key"
 ALGORITHM = "HS256"
@@ -15,6 +16,12 @@ users_db = {
     "user1": {"username": "user1", "password": "password1", "role": "admin"},
     "user2": {"username": "user2", "password": "password2", "role": "viewer"},
 }
+
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to the ZTA Backend"}
 
 def authenticate_user(username: str, password: str):
     user = users_db.get(username)
