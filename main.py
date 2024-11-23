@@ -3,6 +3,9 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from jose import jwt
 from datetime import datetime, timedelta
+import os
+
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback_default_key")  # Replace fallback key as needed
 
 # Configuration
 SECRET_KEY = "your_secret_key"  # Replace with a secure secret key
